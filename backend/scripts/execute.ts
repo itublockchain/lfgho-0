@@ -1,15 +1,15 @@
 import { ethers } from "hardhat";
 
 const FACTORY_NONCE = 1;
-const FACTORY_ADDRESS = "0x053456F84ecE3a85aE52B2FF095Bc710A347a8F0";
-const EP_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
-// const EP_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3"  
+const FACTORY_ADDRESS = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512";
+// const EP_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+const EP_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
 async function main() {
-  //   const [signer0] = await ethers.getSigners();
-  //   const address0 = await signer0.getAddress();
-  const signer0 = new ethers.Wallet(process.env.PRIVATE_KEY!);
+  const [signer0] = await ethers.getSigners();
   const address0 = await signer0.getAddress();
+  // const signer0 = new ethers.Wallet(process.env.PRIVATE_KEY!);
+  // const address0 = await signer0.getAddress();
 
   const entryPoint = await ethers.getContractAt("EntryPoint", EP_ADDRESS);
 
@@ -29,7 +29,7 @@ async function main() {
 
   const callData = account.interface.encodeFunctionData("increment");
 
-//   await entryPoint.depositTo(sender, { value: ethers.utils.parseEther("0.5") });
+  await entryPoint.depositTo(sender, { value: ethers.utils.parseEther("100") });
   console.log("sender: ", sender);
 
   const userOp = {
@@ -46,9 +46,23 @@ async function main() {
     signature: "0x",
   };
 
-  const tx = await entryPoint.handleOps([userOp], address0, {gasLimit: 5000000});
-  const receipt = await tx.wait();
-  console.log(receipt);
+  fetch("http://localhost:3000/bundler", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      txs: [userOp]
+    }),
+  })
+    .then((res) => res.json().then((data) => console.log(data)))
+    .catch((err) => console.log("Err: " + err));
+
+  // const tx = await entryPoint.handleOps([userOp], address0, {
+  //   gasLimit: 5000000,
+  // });
+  // const receipt = await tx.wait();
+  // console.log(receipt);
 }
 
 main().catch((error) => {

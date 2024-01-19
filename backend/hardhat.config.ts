@@ -5,11 +5,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "sepolia",
+  defaultNetwork: "localhost",
   networks: {
     localhost: {
       url: "http://localhost:8545",
-      chainId: 1337,
+      chainId: 31337,
     },
     sepolia: {
       url: "https://sepolia.infura.io/v3/b33f1a8a155b4bb6aabfaef79cf5e5d6",

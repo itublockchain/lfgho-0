@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 
 const EP_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
-const ACCOUNT_ADDRESS = "0xc7eB28E5Cbb636Ee45A7FBf7b5Cb85f2ebCA7A1B";
+const ACCOUNT_ADDRESS = "0xCafac3dD18aC6c6e92c921884f9E4176737C052c";
 
 async function main() {
 
