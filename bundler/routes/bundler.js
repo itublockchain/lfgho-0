@@ -22,7 +22,7 @@ const USEROP_REQUIRED_FIELDS = [
 router.post("/", async function (req, res, next) {
   console.log(req.body);
   try {
-    if (req.body.txs == null) {
+    if (req.body?.txs == null) {
       return res.status(400).send({
         status: false,
         error: "Missing field txs",
