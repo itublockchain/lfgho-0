@@ -6,6 +6,8 @@
   },
   "dependencies": {
     "@account-abstraction/contracts": "^0.6.0",
+    "@chainlink/contracts": "^0.8.0",
+    "@chainlink/contracts-ccip": "^1.2.1",
     "@openzeppelin/contracts": "^4.2.0",
     "dotenv": "^16.3.1",
     "to-hex": "^0.0.18"

@@ -16,6 +16,11 @@ const config: HardhatUserConfig = {
       chainId: 11155111,
       accounts: [process.env.PRIVATE_KEY!],
     },
+    optimism: {
+      url: "https://optimism-goerli.infura.io/v3/b33f1a8a155b4bb6aabfaef79cf5e5d6",
+      chainId: 420,
+      accounts: [process.env.PRIVATE_KEY!],
+    },
   },
   solidity: {
     compilers: [

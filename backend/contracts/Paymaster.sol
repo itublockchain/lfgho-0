@@ -20,7 +20,7 @@ contract Paymaster is IPaymaster {
         uint256 maxCost
     ) external returns (bytes memory context, uint256 validationData) 
     {
-        token.transferFrom(userOp.sender, address(this), 1);
+        token.transferFrom(userOp.sender, address(this), maxCost * ETHER_TO_GHO);
         context = new bytes(0);
         validationData = 0;
     }

@@ -137,7 +137,7 @@ contract Account is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initiali
 }
 
 contract AccountFactory {
-    function createAccount(address _entryPoint, address _owner) external returns (address) {
-        return address(new Account(IEntryPoint(_entryPoint), _owner));
+    function createAccount(address _entryPoint, address _owner, bytes32 _salt) external returns (address) {
+        return address(new Account{salt: _salt}(IEntryPoint(_entryPoint), _owner));
     }
 }
