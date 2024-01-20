@@ -1,0 +1,5 @@
+{
+    "solidity.telemetry": true,
+    "solidity.formatter": "forge",
+    "solidity-language-server.trace.server.verbosity": "message",
+}

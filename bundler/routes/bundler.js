@@ -3,7 +3,8 @@ var express = require("express");
 var router = express.Router();
 
 const abi = require("../chain/abi");
-const { signer0, provider } = require("../chain/provider");
+const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
+const signer0 = new ethers.Wallet("ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80", provider);
 
 const USEROP_REQUIRED_FIELDS = [
   "sender",
@@ -20,7 +21,6 @@ const USEROP_REQUIRED_FIELDS = [
 ];
 
 router.post("/", async function (req, res, next) {
-  console.log(req.body);
   try {
     if (req.body?.txs == null) {
       return res.status(400).send({
@@ -44,7 +44,7 @@ router.post("/", async function (req, res, next) {
     const userOps = req.body.txs;
 
     const entryPointInterface = new ethers.utils.Interface(abi);
-    const entryPointAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
+    const entryPointAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
     const entryPoint = new ethers.Contract(
       entryPointAddress,
       entryPointInterface,
@@ -53,10 +53,13 @@ router.post("/", async function (req, res, next) {
 
     console.log("Handling operations", userOps);
 
-    const handleTx = await entryPoint.handleOps([userOps], signer0.address);
+    
+    await entryPoint.handleOps(userOps, signer0.address, {
+      gasLimit: 5000000,
+    });
     const randomId = Buffer.from(ethers.utils.randomBytes(10)).toString("hex");
 
-    console.log(`Handle transaction complete: ${handleTx.hash}`);
+    // console.log(`Handle transaction complete: ${handleTx.hash}`);
 
     res.send({
       status: true,
