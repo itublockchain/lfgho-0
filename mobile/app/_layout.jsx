@@ -1,3 +1,4 @@
+import { StatusBar } from "react-native";
 import { Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -41,6 +42,7 @@ export default function RootLayout() {
   return (
     <WagmiConfig config={wagmiConfig}>
       <SafeAreaProvider>
+        <StatusBar barStyle="light-content" />
         <Stack screenOptions={{ headerShown: false }} />
         <Web3Modal />
       </SafeAreaProvider>
