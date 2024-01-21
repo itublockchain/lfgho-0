@@ -12,13 +12,15 @@ import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import "@account-abstraction/contracts/core/BaseAccount.sol";
 import "@account-abstraction/contracts/samples/callback/TokenCallbackHandler.sol";
 
+import "./CCIP.sol";
+
 /**
   * minimal account.
   *  this is sample minimal account.
   *  has execute, eth handling methods
   *  has a single signer that can send requests through the entryPoint.
   */
-contract Account is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initializable {
+contract Account is CCIP, BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initializable {
     using ECDSA for bytes32;
 
     address public owner;
@@ -27,11 +29,6 @@ contract Account is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initiali
 
     event SimpleAccountInitialized(IEntryPoint indexed entryPoint, address indexed owner);
 
-    modifier onlyOwner() {
-        _onlyOwner();
-        _;
-    }
-
     /// @inheritdoc BaseAccount
     function entryPoint() public view virtual override returns (IEntryPoint) {
         return _entryPoint;
@@ -39,9 +36,8 @@ contract Account is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initiali
 
 
     // solhint-disable-next-line no-empty-blocks
-    receive() external payable {}
 
-    constructor(IEntryPoint anEntryPoint, address _owner) {
+    constructor(IEntryPoint anEntryPoint, address _owner, address _router, address _link) CCIP(_router, _link) {
         _entryPoint = anEntryPoint;
         owner = _owner;
     }
@@ -126,7 +122,7 @@ contract Account is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initiali
      * @param withdrawAddress target to send to
      * @param amount to withdraw
      */
-    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) public onlyOwner {
+    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) public {
         entryPoint().withdrawTo(withdrawAddress, amount);
     }
 
@@ -137,7 +133,7 @@ contract Account is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initiali
 }
 
 contract AccountFactory {
-    function createAccount(address _entryPoint, address _owner, bytes32 _salt) external returns (address) {
-        return address(new Account{salt: _salt}(IEntryPoint(_entryPoint), _owner));
+    function createAccount(address _entryPoint, address _owner, address _router, address _link) external returns (address) {
+        return address(new Account(IEntryPoint(_entryPoint), _owner, _router, _link));
     }
 }

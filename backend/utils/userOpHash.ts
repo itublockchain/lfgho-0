@@ -2,6 +2,8 @@ import { ethers } from "ethers";
 import { BytesLike } from "ethers";
 import dotenv from "dotenv";
 
+dotenv.config();
+
 const EP_ADDRESS = process.env.EP_ADDRESS!;
 
 type UserOperation = {
