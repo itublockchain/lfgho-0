@@ -34,9 +34,9 @@ const Home = () => {
           {address ? "Redirecting" : "Connect Wallet"}
         </Text>
       </Pressable>
-      <Pressable onPress={() => router.replace("SelectChain")}>
+      {/* <Pressable onPress={() => router.replace("SelectChain")}>
         <Text>Geç</Text>
-      </Pressable>
+      </Pressable> */}
     </View>
   );
 };

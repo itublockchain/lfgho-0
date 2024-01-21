@@ -50,7 +50,7 @@ function Feyyazcigim({
       left: withTiming(left.value, config),
       transform: [
         {
-          rotate: `${rotation.value}deg`,
+          rotateZ: `${rotation.value}deg`,
         },
       ],
     };
@@ -62,13 +62,15 @@ function Feyyazcigim({
         setDirection((prevDirection) => (prevDirection === 0 ? 1 : 0));
         onSwitch();
         if (direction === 0) {
-          rotation.value = withTiming(180, config, () => {
-            rotation.value = 180; // Animasyon tamamlandığında değeri sıfırla
+          left.value = 43;
+          rotation.value = withTiming(360, config, () => {
+            rotation.value = 360; // Animasyon tamamlandığında değeri sıfırla
           });
           return;
         }
         if (direction === 1) {
-          rotation.value = withTiming(360, config, () => {
+          left.value = 0;
+          rotation.value = withTiming(0, config, () => {
             rotation.value = 0; // Animasyon tamamlandığında değeri sıfırla
           });
           return;
@@ -77,12 +79,12 @@ function Feyyazcigim({
       disabled={disabled}
     >
       <View style={[styles.switch, direction === 1 && styles.switched]}>
-        <Animated.View style={style}>
-          <Image
+        <View>
+          <Animated.Image
             source={images.find((el) => el.name === chain).image}
-            style={styles.toggle}
+            style={[styles.toggle, style]}
           />
-        </Animated.View>
+        </View>
       </View>
     </Pressable>
   );

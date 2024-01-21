@@ -2,11 +2,13 @@ import { useState, useReducer, useEffect } from "react";
 import { View, Text, StyleSheet, StatusBar, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import { useAccount, useSignMessage } from "wagmi";
 
 // Import Custom Functions
 import Feyyazcigim from "../../lib/feyyaz";
 import { getHeight, getWidth } from "../../utils/measure";
 import { storeData } from "../../utils/storage";
+// import { createAccounts } from "../../utils/functions/deployContracts";
 
 const chains = [
   {
@@ -44,6 +46,8 @@ function reducer(state, action) {
 }
 
 const SelectChain = () => {
+  const { address } = useAccount();
+  const { signMessage } = useSignMessage();
   const insets = useSafeAreaInsets();
   const [status, setStatus] = useState("disabled"); // disabled, processing, enabled
   const [state, dispatch] = useReducer(reducer, init);
@@ -87,6 +91,10 @@ const SelectChain = () => {
         onPress={async () => {
           setStatus("processing");
           await storeData(state);
+          // await createAccounts(
+          //   (address = address),
+          //   (signMessage = signMessage)
+          // );
           router.replace("Home");
         }}
         style={[
