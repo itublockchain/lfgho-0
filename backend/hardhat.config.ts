@@ -21,6 +21,11 @@ const config: HardhatUserConfig = {
       chainId: 420,
       accounts: [process.env.PRIVATE_KEY!],
     },
+    baseGoerli: {
+      url: "https://base-goerli.public.blastapi.io",
+      chainId: 84531,
+      accounts: [process.env.PRIVATE_KEY!],
+    },
   },
   solidity: {
     compilers: [
